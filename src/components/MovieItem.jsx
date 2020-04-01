@@ -2,7 +2,7 @@ import React from "react";
 
 class MovieItem extends React.Component {
   state = {
-    willWatch: false
+    willWatch: false,
   };
 
   render() {
@@ -10,7 +10,8 @@ class MovieItem extends React.Component {
       data,
       deleteMovie,
       addMovieToWillWatch,
-      deleteMovieFromWillWatch
+      deleteMovieFromWillWatch,
+      showMovie
     } = this.props;
     
     return (
@@ -23,12 +24,12 @@ class MovieItem extends React.Component {
         />
         <div className="card-body">
           <h6 className="card-title">{data.title}</h6>
-          <div className="d-flex justify-content-between align-items-center">
-            <p className="mb-0">Rating: {data.vote_average}</p>
+          <p className="mb-2">Рейтинг: {data.vote_average}</p>
+          <div className="d-flex justify-content-between align-items-center">            
             {this.state.willWatch ? (
               <button
                 type="button"
-                className="btn btn-success"
+                className="btn btn-warning"
                 onClick={() => {
                   this.setState({
                     willWatch: false
@@ -36,31 +37,44 @@ class MovieItem extends React.Component {
                   deleteMovieFromWillWatch(data);
                 }}
               >
-                Will Watch
+                Просмотрено
               </button>
-            ) : (
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={() => {
-                    this.setState({
-                      willWatch: true
-                    });
-                    addMovieToWillWatch(data);
-                  }}
-                >
-                  Will Watch
+              ) : (
+              <button
+                type="button"
+                className="btn btn-success"
+                onClick={() => {
+                  this.setState({
+                    willWatch: true
+                  });
+                  addMovieToWillWatch(data);
+                }}
+              >
+                Смотреть позже
               </button>
               )}
+
+              <button
+                type="button"
+                className="btn btn-info"
+                onClick={() => {
+                  showMovie(data.id)
+                }}
+              >
+                Подробнее
+              </button>
+              
+              <button
+                type="button"
+                className="btn btn-danger"
+                onClick={() => {
+                  deleteMovie(data);
+                }}
+              >
+                Удалить
+              </button>
           </div>
-          <button
-            type="button"
-            onClick={() => {
-              deleteMovie(data);
-            }}
-          >
-            Delete
-          </button>
+          
         </div>
       </div>
     );

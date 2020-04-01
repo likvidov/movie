@@ -15,15 +15,29 @@ const MovieTabs = props => {
           className={getSortBy("popularity.desc")}
           onClick={updateSortBy.bind(null, "popularity.desc")}
         >
-          Popularity desc
+          Популярные по убыванию
         </div>
+        <div 
+          className={getSortBy("popularity.asc")}
+          onClick={updateSortBy.bind(null, "popularity.asc")}
+        >
+          Популярные по возрастанию
+        </div>
+        
       </li>
+      
       <li className="nav-item">
         <div 
           className={getSortBy("revenue.desc")}
           onClick={updateSortBy.bind(null, "revenue.desc")}
         >
-          Revenue desc
+          Доход по убыванию
+        </div>
+        <div 
+          className={getSortBy("revenue.asc")}
+          onClick={updateSortBy.bind(null, "revenue.asc")}
+        >
+          Доход по возрастанию
         </div>
       </li>
       <li className="nav-item">
@@ -31,7 +45,13 @@ const MovieTabs = props => {
           className={getSortBy("vote_average.desc")}
           onClick={updateSortBy.bind(null, "vote_average.desc")}
         >
-          Vote average desc
+          Рейтинг по убыванию
+        </div>
+        <div 
+          className={getSortBy("vote_average.asc")}
+          onClick={updateSortBy.bind(null, "vote_average.asc")}
+        >
+          Рейтинг по возрастанию
         </div>
       </li>
     </ul>

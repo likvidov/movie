@@ -3,6 +3,7 @@ import MovieItem from "./MovieItem";
 import MovieTabs from "./MovieTabs";
 import { API_URL, API_KEY_3 } from "../utils/api";
 import PaginationItem from "./PaginationItem";
+import MovieModal from "./MovieModal";
 
 class App extends React.Component {
   constructor() {
@@ -13,9 +14,24 @@ class App extends React.Component {
       moviesWillWatch: [],
       sort_by: "popularity.desc",
       currentPage: 1,
-      totalPages: 0
+      totalPages: 0,     
+      showMovieId: null
     };
-  }
+  }  
+
+  showMovie = id => {
+    this.setState({
+      showMovieId: id
+    });
+    document.querySelector('#movieModal').classList.add("d-block");
+  };
+
+  closeMovie = () => {
+    this.setState({
+      showMovieId: null
+    });
+    document.querySelector('#movieModal').classList.remove("d-block");
+  };
 
   updateSortBy = value => {
     this.setState({
@@ -33,7 +49,7 @@ class App extends React.Component {
   }
 
   getMovies = () => {
-    fetch(API_URL + "/discover/movie?api_key=" + API_KEY_3 + "&language=ru-RU&sort_by=" + this.state.sort_by + "&page=" + this.state.currentPage)
+    fetch(`${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU&sort_by=${this.state.sort_by}&page=${this.state.currentPage}`)
       .then(response => response.json())
       .then(data => 
         this.setState({
@@ -79,7 +95,7 @@ class App extends React.Component {
     });
   };
 
-  render() {
+  render() {    
     return (
       <div className="container">
         <div className="row mt-4">
@@ -98,6 +114,7 @@ class App extends React.Component {
                       deleteMovie={this.deleteMovie}
                       addMovieToWillWatch={this.addMovieToWillWatch}
                       deleteMovieFromWillWatch={this.deleteMovieFromWillWatch}
+                      showMovie={this.showMovie}
                     />
                   </div>
                 );
@@ -105,7 +122,7 @@ class App extends React.Component {
             </div>
           </div>
           <div className="col-3">
-            <h4>Will Watch: {this.state.moviesWillWatch.length} movies</h4>
+            <h4>Смотреть позже: {this.state.moviesWillWatch.length} </h4>
             <ul className="list-group">
               {this.state.moviesWillWatch.map(movie => (
                 <li key={movie.id} className="list-group-item">
@@ -127,6 +144,7 @@ class App extends React.Component {
             />
           </div>
         </div>
+        <MovieModal showMovieId={this.state.showMovieId} closeMovie={this.closeMovie}/>
       </div>
     );
   }
