@@ -33,7 +33,7 @@ class App extends React.Component {
   }
 
   getMovies = () => {
-    fetch(API_URL + "/discover/movie?api_key=" + API_KEY_3 + "&language=en-En&sort_by=" + this.state.sort_by + "&page=" + this.state.currentPage)
+    fetch(API_URL + "/discover/movie?api_key=" + API_KEY_3 + "&language=ru-RU&sort_by=" + this.state.sort_by + "&page=" + this.state.currentPage)
       .then(response => response.json())
       .then(data => 
         this.setState({
