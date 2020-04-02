@@ -1,9 +1,12 @@
 import React from "react";
 
 class MovieItem extends React.Component {
-  state = {
-    willWatch: false,
-  };
+  constructor(props) {
+    super();
+    this.state = {
+      willWatch: props.willWatch ? true : false,
+    };
+  }
 
   render() {
     const {
@@ -11,17 +14,20 @@ class MovieItem extends React.Component {
       deleteMovie,
       addMovieToWillWatch,
       deleteMovieFromWillWatch,
-      showMovie
+      showMovie      
     } = this.props;
     
     return (
-      <div className="card">
-        <img
-          className="card-img-top"
-          src={`https://image.tmdb.org/t/p/w500${data.backdrop_path ||
-            data.poster_path}`}
-          alt=""
-        />
+      <div className="card overflow-hidden" style={{height: "400px"}}>
+        
+          <img
+            className="card-img-top img-fluid rounded img-responsive"
+            src={`https://image.tmdb.org/t/p/w500${data.backdrop_path ||
+              data.poster_path}`}
+            alt=""
+            style={{height: "250px"}}
+          />
+        
         <div className="card-body">
           <h6 className="card-title">{data.title}</h6>
           <p className="mb-2">Рейтинг: {data.vote_average}</p>

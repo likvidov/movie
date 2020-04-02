@@ -8,10 +8,9 @@ import MovieModal from "./MovieModal";
 class App extends React.Component {
   constructor() {
     super();
-
     this.state = {
       movies: [],
-      moviesWillWatch: [],
+      moviesWillWatch: JSON.parse(localStorage.getItem("moviesWillWatch")) || [],
       sort_by: "popularity.desc",
       currentPage: 1,
       totalPages: 0,     
@@ -41,7 +40,6 @@ class App extends React.Component {
   }
 
   switherPage = (value, event) => {
-    console.log(event.preventDefault())
     event.preventDefault();
     this.setState({
       currentPage: value
@@ -78,26 +76,31 @@ class App extends React.Component {
 
   addMovieToWillWatch = movie => {
     const updateMoviesWillWatch = [...this.state.moviesWillWatch];
-    updateMoviesWillWatch.push(movie);
+    updateMoviesWillWatch.push([movie.id, movie.title, movie.vote_average]);
 
     this.setState({
       moviesWillWatch: updateMoviesWillWatch
     });
+
+    localStorage.setItem('moviesWillWatch', JSON.stringify(updateMoviesWillWatch))
   };
 
   deleteMovieFromWillWatch = movie => {
     const updateMoviesWillWatch = this.state.moviesWillWatch.filter(
-      item => item.id !== movie.id
+      item => item[0] !== movie.id
     );
 
     this.setState({
       moviesWillWatch: updateMoviesWillWatch
     });
+    
+    localStorage.setItem('moviesWillWatch', JSON.stringify(updateMoviesWillWatch))
   };
 
-  render() {    
+  render() {
     return (
       <div className="container">
+        
         <div className="row mt-4">
           <div className="col-9">
             <div className="row mb-4">
@@ -108,13 +111,14 @@ class App extends React.Component {
             <div className="row">
               {this.state.movies.map(movie => {
                 return (
-                  <div className="col-6 mb-4" key={movie.id}>
+                  <div className="col-6 mb-4 mh-50" key={movie.id}>
                     <MovieItem
                       data={movie}
                       deleteMovie={this.deleteMovie}
                       addMovieToWillWatch={this.addMovieToWillWatch}
                       deleteMovieFromWillWatch={this.deleteMovieFromWillWatch}
                       showMovie={this.showMovie}
+                      willWatch={this.state.moviesWillWatch.find(item => item[0] === movie.id)}
                     />
                   </div>
                 );
@@ -122,13 +126,13 @@ class App extends React.Component {
             </div>
           </div>
           <div className="col-3">
-            <h4>Смотреть позже: {this.state.moviesWillWatch.length} </h4>
+            <h4 >Смотреть позже: <span className="badge badge-primary">{this.state.moviesWillWatch.length}</span></h4>
             <ul className="list-group">
               {this.state.moviesWillWatch.map(movie => (
-                <li key={movie.id} className="list-group-item">
+                <li key={movie[0]} className="list-group-item">
                   <div className="d-flex justify-content-between">
-                    <p>{movie.title}</p>
-                    <p>{movie.vote_average}</p>
+                    <p>{movie[1]}</p>
+                    <p>{movie[2]}</p>
                   </div>
                 </li>
               ))}
